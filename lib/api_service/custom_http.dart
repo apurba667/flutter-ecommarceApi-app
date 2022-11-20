@@ -15,9 +15,11 @@ class CustomHttp{
     var responce = await http.post(Uri.parse(link),body: map,headers: defaultHeader);
     print("Responce is ${responce.body}");
     if(responce.statusCode==200){
+      showInToast("Login Successfull");
       return responce.body;
     }
     else{
+      showInToast("Invalid emial of password");
       return "Something is Wrong";
     }
   }
