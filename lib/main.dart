@@ -1,5 +1,6 @@
 
-import 'package:ecommerceapiapp/screen/home_page.dart';
+import 'package:ecommerceapiapp/screen/bottom_nav/bottom_nav_page.dart';
+
 import 'package:ecommerceapiapp/screen/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: isLogin()==true? LoginPage():HomePage(),
+      home: isLogin()==true? LoginPage():BottomNav(),
     );
   }
 }

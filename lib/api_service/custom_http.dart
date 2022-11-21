@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:ecommerceapiapp/model/order_model.dart';
 import 'package:ecommerceapiapp/widget/const.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class CustomHttp{
@@ -19,9 +23,48 @@ class CustomHttp{
       return responce.body;
     }
     else{
-      showInToast("Invalid emial of password");
+      showInToast("Invalid email of password");
       return "Something is Wrong";
     }
   }
+
+
+  Future<Map<String,String>> getHeaderWithToken()async{
+   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   var Map = {
+     "Accept":"Applicaton/json",
+     "Authorization" : "bearer ${sharedPreferences.getString("token")}"
+   };
+   print("Uer Token issss ${sharedPreferences.getString("token")}");
+   return Map;
+  }
+
+
+  Future<List<OrderModel>> fetchOrderData()async{
+   List<OrderModel> orderList = [];
+   OrderModel orderModel;
+   try{
+     var link = "${baseUrl}api/admin/all/orders";
+     var responce = await http.get(Uri.parse(link),headers: await getHeaderWithToken());
+  print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa${responce.body}");
+     if(responce.statusCode==200){
+       var data = jsonDecode(responce.body);
+       for(var i in data){
+         orderModel = OrderModel.fromJson(i);
+         orderList.add(orderModel);
+       }
+       return orderList;
+     }
+    else{
+      showInToast("Something is Wrong!!");
+      return orderList;
+     }
+
+   } catch(e){
+     print("The problem is $e");
+     return orderList;
+   }
+  }
+
 
 }
