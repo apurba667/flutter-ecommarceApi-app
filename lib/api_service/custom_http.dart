@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ecommerceapiapp/model/category_model.dart';
 import 'package:ecommerceapiapp/model/order_model.dart';
 import 'package:ecommerceapiapp/widget/const.dart';
 import 'package:http/http.dart' as http;
@@ -64,6 +65,31 @@ class CustomHttp{
      print("The problem is $e");
      return orderList;
    }
+  }
+  Future<List<CategoryModel>> fetchCategoryData()async{
+    List<CategoryModel> categoryList = [];
+    CategoryModel categoryModel;
+    try{
+      var link = "${baseUrl}api/admin/category";
+      var responce = await http.get(Uri.parse(link),headers: await getHeaderWithToken());
+      print("bbbbbbbbbbbbbbbb${responce.body}");
+      if(responce.statusCode==200){
+        var data = jsonDecode(responce.body);
+        for(var i in data){
+          categoryModel = CategoryModel.fromJson(i);
+          categoryList.add(categoryModel);
+        }
+        return categoryList;
+      }
+      else{
+        showInToast("Something is Wrong!!");
+        return categoryList;
+      }
+
+    } catch(e){
+      print("The problem is $e");
+      return categoryList;
+    }
   }
 
 

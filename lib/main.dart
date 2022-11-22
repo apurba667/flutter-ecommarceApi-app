@@ -1,8 +1,11 @@
 
+import 'package:ecommerceapiapp/provider/category_provider.dart';
+import 'package:ecommerceapiapp/provider/order_provider.dart';
 import 'package:ecommerceapiapp/screen/bottom_nav/bottom_nav_page.dart';
 
 import 'package:ecommerceapiapp/screen/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -17,14 +20,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
  static Future<bool> isLogin()async{
+   bool hasToken = false;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var token =  sharedPreferences.getString("token");
     print("My token is $token");
     if(token!=null){
-      return true;
+      hasToken = true;
     }
-    return false;
+    else {
+      hasToken = false;
+    }
+    return hasToken;
 
   }
   @override
@@ -37,9 +45,15 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: isLogin()==true? LoginPage():BottomNav(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context)=>OrderProvider()),
+        ChangeNotifierProvider(create: (context)=>CategoryProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: LoginPage()
+      ),
     );
   }
 }

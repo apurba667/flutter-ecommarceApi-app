@@ -2,6 +2,7 @@ import 'dart:convert';
 
 
 import 'package:ecommerceapiapp/api_service/custom_http.dart';
+import 'package:ecommerceapiapp/screen/bottom_nav/bottom_nav_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -153,6 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: ElevatedButton(
                             onPressed: () {
                               getLogin();
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BottomNav()));
                             },
                             child: Text("Sign In"))),
                     Row(
