@@ -1,5 +1,6 @@
 import 'package:ecommerceapiapp/provider/category_provider.dart';
 import 'package:ecommerceapiapp/screen/add_categoryPage.dart';
+import 'package:ecommerceapiapp/screen/edit_category.dart';
 import 'package:ecommerceapiapp/widget/const.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +70,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                   children: [
                                     InkWell(
                                       onTap: (){
-
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>EditCategory(
+                                          categoryModel: categoryList[index],
+                                        ))).then((value) => Provider.of<CategoryProvider>(context,listen: false).getCategoryData());
                                       },
                                       child: Container(
                                         child: Row(
